@@ -13,9 +13,6 @@ dependencies:
     sdk: flutter
 
 dev_dependencies:
-  better_linter:
-    git:
-      url: git@github.com:mdikcinar/better_linter.git
-      ref: master
+
   flutter_test:
     sdk: flutter

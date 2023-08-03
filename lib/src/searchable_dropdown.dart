@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:searchable_paginated_dropdown/src/extensions/extensions.dart';
 import 'package:searchable_paginated_dropdown/src/model/searchable_dropdown_menu_item.dart';
-import 'package:searchable_paginated_dropdown/src/searchable_dropdown_controller.dart';
+import 'package:searchable_paginated_dropdown/searchable_dropdown_controller.dart';
 import 'package:searchable_paginated_dropdown/src/utils/custom_inkwell.dart';
 import 'package:searchable_paginated_dropdown/src/utils/custom_search_bar.dart';
 
@@ -24,6 +24,7 @@ class SearchableDropdown<T> extends StatefulWidget {
     bool isEnabled = true,
     VoidCallback? disabledOnTap,
     double? width,
+    required SearchableDropdownController<T> controller,
     bool isDialogExpanded = true,
   }) : this._(
           key: key,
@@ -40,17 +41,17 @@ class SearchableDropdown<T> extends StatefulWidget {
           items: items,
           value: value,
           isEnabled: isEnabled,
+          controller: controller,
           disabledOnTap: disabledOnTap,
           width: width,
           isDialogExpanded: isDialogExpanded,
         );
 
   const SearchableDropdown.paginated({
-    required Future<List<SearchableDropdownMenuItem<T>>?> Function(
-      int,
-      String?,
-    )?
-        paginatedRequest,
+    // required Future<List<SearchableDropdownMenuItem<T>>?> Function(
+    //   int,
+    //   String?,
+    // )? paginatedRequest,
     int? requestItemCount,
     Key? key,
     Widget? hintText,
@@ -67,10 +68,11 @@ class SearchableDropdown<T> extends StatefulWidget {
     VoidCallback? disabledOnTap,
     Duration? changeCompletionDelay,
     double? width,
+    required SearchableDropdownController<T> controller,
     bool isDialogExpanded = true,
   }) : this._(
           key: key,
-          paginatedRequest: paginatedRequest,
+          // paginatedRequest: paginatedRequest,
           requestItemCount: requestItemCount,
           hintText: hintText,
           backgroundDecoration: backgroundDecoration,
@@ -83,45 +85,7 @@ class SearchableDropdown<T> extends StatefulWidget {
           leadingIcon: leadingIcon,
           onChanged: onChanged,
           isEnabled: isEnabled,
-          disabledOnTap: disabledOnTap,
-          changeCompletionDelay: changeCompletionDelay,
-          width: width,
-          isDialogExpanded: isDialogExpanded,
-        );
-
-  const SearchableDropdown.future({
-    required Future<List<SearchableDropdownMenuItem<T>>?> Function()?
-        futureRequest,
-    Key? key,
-    Widget? hintText,
-    Widget Function(Widget)? backgroundDecoration,
-    String? searchHintText,
-    Widget? noRecordText,
-    double? dropDownMaxHeight,
-    EdgeInsetsGeometry? margin,
-    Widget? trailingIcon,
-    Widget? trailingClearIcon,
-    Widget? leadingIcon,
-    void Function(T?)? onChanged,
-    bool isEnabled = true,
-    VoidCallback? disabledOnTap,
-    Duration? changeCompletionDelay,
-    double? width,
-    bool isDialogExpanded = true,
-  }) : this._(
-          futureRequest: futureRequest,
-          key: key,
-          hintText: hintText,
-          backgroundDecoration: backgroundDecoration,
-          searchHintText: searchHintText,
-          noRecordText: noRecordText,
-          dropDownMaxHeight: dropDownMaxHeight,
-          margin: margin,
-          trailingIcon: trailingIcon,
-          trailingClearIcon: trailingClearIcon,
-          leadingIcon: leadingIcon,
-          onChanged: onChanged,
-          isEnabled: isEnabled,
+          controller: controller,
           disabledOnTap: disabledOnTap,
           changeCompletionDelay: changeCompletionDelay,
           width: width,
@@ -145,7 +109,8 @@ class SearchableDropdown<T> extends StatefulWidget {
     this.isEnabled = true,
     this.disabledOnTap,
     this.futureRequest,
-    this.paginatedRequest,
+    required this.controller,
+    // this.paginatedRequest,
     this.requestItemCount,
     this.changeCompletionDelay,
     this.width,
@@ -173,10 +138,11 @@ class SearchableDropdown<T> extends StatefulWidget {
   final Future<List<SearchableDropdownMenuItem<T>>?> Function()? futureRequest;
 
   /// Paginated request service which is returns DropdownMenuItem list.
-  final Future<List<SearchableDropdownMenuItem<T>>?> Function(
-    int page,
-    String? searchKey,
-  )? paginatedRequest;
+  // final Future<List<SearchableDropdownMenuItem<T>>?> Function(
+  //   int page,
+  //   String? searchKey,
+  // )? paginatedRequest;
+  final SearchableDropdownController<T> controller;
 
   /// Paginated request item count which returns in one page, this value is using for knowledge about isDropdown has more item or not.
   final int? requestItemCount;
@@ -219,31 +185,26 @@ class SearchableDropdown<T> extends StatefulWidget {
 }
 
 class _SearchableDropdownState<T> extends State<SearchableDropdown<T>> {
-  final SearchableDropdownController<T> controller =
-      SearchableDropdownController<T>();
-
   @override
   void initState() {
-    controller
-      ..paginatedRequest = widget.paginatedRequest
-      ..futureRequest = widget.futureRequest
+    widget.controller
       ..requestItemCount = widget.requestItemCount ?? 0
       ..items = widget.items
       ..searchedItems.value = widget.items;
     for (final element in widget.items ?? <SearchableDropdownMenuItem<T>>[]) {
       if (element.value == widget.value) {
-        controller.selectedItem.value = element;
+        widget.controller.selectedItem.value = element;
         return;
       }
     }
-    controller.initialize();
+    widget.controller.initialize();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    final dropdownWidget = _DropDown(
-      controller: controller,
+    final dropdownWidget = _DropDown<T>(
+      controller: widget.controller,
       isEnabled: widget.isEnabled,
       disabledOnTap: widget.disabledOnTap,
       dropDownMaxHeight: widget.dropDownMaxHeight,
@@ -253,7 +214,6 @@ class _SearchableDropdownState<T> extends State<SearchableDropdown<T>> {
       margin: widget.margin,
       noRecordText: widget.noRecordText,
       onChanged: widget.onChanged,
-      paginatedRequest: widget.paginatedRequest,
       searchHintText: widget.searchHintText,
       trailingIcon: widget.trailingIcon,
       trailingClearIcon: widget.trailingClearIcon,
@@ -262,7 +222,7 @@ class _SearchableDropdownState<T> extends State<SearchableDropdown<T>> {
     );
 
     return SizedBox(
-      key: controller.key,
+      key: widget.controller.key,
       width: widget.width ?? MediaQuery.of(context).size.width,
       child:
           widget.backgroundDecoration?.call(dropdownWidget) ?? dropdownWidget,
@@ -380,7 +340,7 @@ class _DropDown<T> extends StatelessWidget {
     final deviceHeight = context.deviceHeight;
     final dropdownGlobalPointBounds = controller.key.globalPaintBounds;
     final alertDialogMaxHeight = dropDownMaxHeight ?? deviceHeight * 0.35;
-    const dialogOffset = 35; //Dialog offset from dropdown
+    const dialogOffset = -50; //Dialog offset from dropdown
 
     final dropdownPositionFromBottom = dropdownGlobalPointBounds != null
         ? deviceHeight - dropdownGlobalPointBounds.bottom
@@ -400,10 +360,7 @@ class _DropDown<T> extends StatelessWidget {
       }
     }
     if (controller.items == null) {
-      if (paginatedRequest != null) {
-        controller.getItemsWithPaginatedRequest(page: 1, isNewSearch: true);
-      }
-      if (futureRequest != null) controller.getItemsWithFutureRequest();
+      controller.getItemsWithPaginatedRequest(page: 1, isNewSearch: true);
     } else {
       controller.searchedItems.value = controller.items;
     }
@@ -440,7 +397,6 @@ class _DropDown<T> extends StatelessWidget {
                   isReversed: isReversed,
                   noRecordText: noRecordText,
                   onChanged: onChanged,
-                  paginatedRequest: paginatedRequest,
                   searchHintText: searchHintText,
                   changeCompletionDelay: changeCompletionDelay,
                 ),
@@ -486,7 +442,6 @@ class _DropDownCard<T> extends StatelessWidget {
     required this.controller,
     required this.isReversed,
     this.searchHintText,
-    this.paginatedRequest,
     this.onChanged,
     this.noRecordText,
     this.changeCompletionDelay,
@@ -494,10 +449,6 @@ class _DropDownCard<T> extends StatelessWidget {
 
   final bool isReversed;
   final Duration? changeCompletionDelay;
-  final Future<List<SearchableDropdownMenuItem<T>>?> Function(
-    int page,
-    String? searchKey,
-  )? paginatedRequest;
   final SearchableDropdownController<T> controller;
   final String? searchHintText;
   final void Function(T? value)? onChanged;
@@ -530,7 +481,6 @@ class _DropDownCard<T> extends StatelessWidget {
                   Flexible(
                     child: _DropDownListView(
                       controller: controller,
-                      paginatedRequest: paginatedRequest,
                       isReversed: isReversed,
                       noRecordText: noRecordText,
                       onChanged: onChanged,
@@ -588,16 +538,11 @@ class _DropDownListView<T> extends StatelessWidget {
   const _DropDownListView({
     required this.controller,
     required this.isReversed,
-    this.paginatedRequest,
     this.noRecordText,
     this.onChanged,
   });
 
   final bool isReversed;
-  final Future<List<SearchableDropdownMenuItem<T>>?> Function(
-    int page,
-    String? searchKey,
-  )? paginatedRequest;
   final SearchableDropdownController<T> controller;
   final void Function(T? value)? onChanged;
   final Widget? noRecordText;
@@ -605,9 +550,7 @@ class _DropDownListView<T> extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder(
-      valueListenable: paginatedRequest != null
-          ? controller.paginatedItemList
-          : controller.searchedItems,
+      valueListenable: controller.paginatedItemList,
       builder: (
         context,
         List<SearchableDropdownMenuItem<T>>? itemList,

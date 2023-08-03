@@ -18,10 +18,6 @@ class SearchableDropdownController<T> {
   final ValueNotifier<SearchableDropdownStatus> status =
       ValueNotifier<SearchableDropdownStatus>(SearchableDropdownStatus.initial);
 
-  late Future<List<SearchableDropdownMenuItem<T>>?> Function(
-    int page,
-    String? key,
-  )? paginatedRequest;
   late Future<List<SearchableDropdownMenuItem<T>>?> Function()? futureRequest;
 
   late int requestItemCount;
@@ -34,43 +30,35 @@ class SearchableDropdownController<T> {
 
   bool _hasMoreData = true;
   int _page = 1;
+  final Function(int, String) newPageRequested;
+
+  SearchableDropdownController(this.newPageRequested);
 
   Future<void> getItemsWithPaginatedRequest({
     required int page,
     String? key,
     bool isNewSearch = false,
   }) async {
-    if (paginatedRequest == null) return;
     if (isNewSearch) {
       _page = 1;
       paginatedItemList.value = null;
       _hasMoreData = true;
     }
     if (!_hasMoreData) return;
-    status.value = SearchableDropdownStatus.busy;
-    final response = await paginatedRequest!(page, key);
-    if (response is! List<SearchableDropdownMenuItem<T>>) return;
+    //  status.value = SearchableDropdownStatus.busy;
+    newPageRequested(page, key ?? "");
+  }
 
+  appendNewPage(List<SearchableDropdownMenuItem<T>> data) {
     paginatedItemList.value ??= [];
-    paginatedItemList.value = paginatedItemList.value! + response;
-    if (response.length < requestItemCount) {
+    paginatedItemList.value = paginatedItemList.value! + data;
+    if (data.length < requestItemCount) {
       _hasMoreData = false;
     } else {
       _page = _page + 1;
     }
     status.value = SearchableDropdownStatus.loaded;
     debugPrint('searchable dropdown has more data: $_hasMoreData');
-  }
-
-  Future<void> getItemsWithFutureRequest() async {
-    if (futureRequest == null) return;
-
-    status.value = SearchableDropdownStatus.busy;
-    final response = await futureRequest!();
-    if (response is! List<SearchableDropdownMenuItem<T>>) return;
-    items = response;
-    searchedItems.value = response;
-    status.value = SearchableDropdownStatus.loaded;
   }
 
   void fillSearchedList(String? value) {
@@ -84,7 +72,6 @@ class SearchableDropdownController<T> {
   }
 
   void initialize() {
-    if (paginatedRequest == null) return;
     scrollController.onBottomReach(() {
       if (searchText.isNotEmpty) {
         getItemsWithPaginatedRequest(page: _page, key: searchText);

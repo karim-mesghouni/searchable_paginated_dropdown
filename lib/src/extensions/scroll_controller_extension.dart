@@ -11,9 +11,9 @@ extension ScrollControllerExtension on ScrollController {
     Timer? timer;
 
     addListener(() {
-      if (timer != null) return;
-
-      timer = Timer(throttleDuration, () => timer = null);
+      // if (timer != null) return;
+      //
+      // timer = Timer(throttleDuration, () => timer = null);
 
       final maxScroll = position.maxScrollExtent;
       final currentScroll = position.pixels;
