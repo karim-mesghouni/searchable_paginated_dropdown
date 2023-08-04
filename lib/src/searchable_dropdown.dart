@@ -393,27 +393,35 @@ class _DropDown<T> extends StatelessWidget {
             left: isDialogExpanded ? 16 : dropdownGlobalPointBounds?.left ?? 0,
             right: isDialogExpanded ? 16 : 0,
           ),
-          child: Container(
-            color: Colors.cyan,
-            child: Column(
+          child: LayoutBuilder(builder: (context, c) {
+            return Column(
               mainAxisAlignment: MainAxisAlignment.end,
-              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(
-                  height: alertDialogMaxHeight,
-                  width: dialogWidth,
-                  child: _DropDownCard(
-                    controller: controller,
-                    isReversed: isReversed,
-                    noRecordText: noRecordText,
-                    onChanged: onChanged,
-                    searchHintText: searchHintText,
-                    changeCompletionDelay: changeCompletionDelay,
-                  ),
+                Row(
+                  children: [
+                    Directionality.of(context) == TextDirection.rtl
+                        ? Expanded(child: SizedBox())
+                        : SizedBox(),
+                    SizedBox(
+                      height: alertDialogMaxHeight,
+                      width: dialogWidth,
+                      child: _DropDownCard(
+                        controller: controller,
+                        isReversed: isReversed,
+                        noRecordText: noRecordText,
+                        onChanged: onChanged,
+                        searchHintText: searchHintText,
+                        changeCompletionDelay: changeCompletionDelay,
+                      ),
+                    ),
+                    Directionality.of(context) == TextDirection.ltr
+                        ? Expanded(child: SizedBox())
+                        : SizedBox(),
+                  ],
                 ),
               ],
-            ),
-          ),
+            );
+          }),
         );
       },
       barrierColor: Colors.transparent,
