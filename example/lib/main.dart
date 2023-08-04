@@ -57,32 +57,29 @@ class MyApp extends StatelessWidget {
         appBar: AppBar(
           title: const Text('Searchable Dropdown Example'),
         ),
-        body: SizedBox(
-          width: 220,
-          child: ListView(
-            children: [
-              const SizedBox(height: 20),
-              /////////////
-              Card(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15.0)),
-                child: SearchableDropdown<int>.paginated(
-                  hintText: const Text('Paginated request'),
-                  margin: const EdgeInsets.all(15),
-                  controller: controller,
-                  requestItemCount: 25,
-                  isEnabled: true,
-                  dialogWidth: 200,
-                  width: 200,
-                  onChanged: (int? value) {
-                    debugPrint('$value');
-                  },
-                ),
+        body: ListView(
+          children: [
+            const SizedBox(height: 20),
+            /////////////
+            Card(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(15.0)),
+              child: SearchableDropdown<int>.paginated(
+                hintText: const Text('Paginated request'),
+                margin: const EdgeInsets.all(15),
+                controller: controller,
+                requestItemCount: 25,
+                isEnabled: true,
+                dialogWidth: 200,
+                width: 200,
+                onChanged: (int? value) {
+                  debugPrint('$value');
+                },
               ),
+            ),
 
-              ////////////
-            ],
-          ),
+            ////////////
+          ],
         ),
       ),
     );

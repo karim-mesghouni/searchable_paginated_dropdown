@@ -393,23 +393,26 @@ class _DropDown<T> extends StatelessWidget {
             left: isDialogExpanded ? 16 : dropdownGlobalPointBounds?.left ?? 0,
             right: isDialogExpanded ? 16 : 0,
           ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.end,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(
-                height: alertDialogMaxHeight,
-                width: dialogWidth,
-                child: _DropDownCard(
-                  controller: controller,
-                  isReversed: isReversed,
-                  noRecordText: noRecordText,
-                  onChanged: onChanged,
-                  searchHintText: searchHintText,
-                  changeCompletionDelay: changeCompletionDelay,
+          child: Container(
+            color: Colors.cyan,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(
+                  height: alertDialogMaxHeight,
+                  width: 100,
+                  child: _DropDownCard(
+                    controller: controller,
+                    isReversed: isReversed,
+                    noRecordText: noRecordText,
+                    onChanged: onChanged,
+                    searchHintText: searchHintText,
+                    changeCompletionDelay: changeCompletionDelay,
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         );
       },
