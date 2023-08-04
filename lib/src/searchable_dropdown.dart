@@ -401,7 +401,7 @@ class _DropDown<T> extends StatelessWidget {
               children: [
                 SizedBox(
                   height: alertDialogMaxHeight,
-                  width: 100,
+                  width: dialogWidth,
                   child: _DropDownCard(
                     controller: controller,
                     isReversed: isReversed,
