@@ -19,6 +19,7 @@ class SearchableDropdown<T> extends StatefulWidget {
     Widget? trailingIcon,
     Widget? trailingClearIcon,
     Widget? leadingIcon,
+    required String local,
     void Function(T?)? onChanged,
     List<SearchableDropdownMenuItem<T>>? items,
     T? value,
@@ -46,6 +47,7 @@ class SearchableDropdown<T> extends StatefulWidget {
           controller: controller,
           disabledOnTap: disabledOnTap,
           width: width,
+          local: local,
           isDialogExpanded: isDialogExpanded,
         );
 
@@ -69,6 +71,7 @@ class SearchableDropdown<T> extends StatefulWidget {
     bool isEnabled = true,
     VoidCallback? disabledOnTap,
     double? dialogWidth,
+    required String local,
     Duration? changeCompletionDelay,
     double? width,
     required SearchableDropdownController<T> controller,
@@ -89,6 +92,7 @@ class SearchableDropdown<T> extends StatefulWidget {
           leadingIcon: leadingIcon,
           onChanged: onChanged,
           isEnabled: isEnabled,
+          local: local,
           controller: controller,
           disabledOnTap: disabledOnTap,
           changeCompletionDelay: changeCompletionDelay,
@@ -99,6 +103,7 @@ class SearchableDropdown<T> extends StatefulWidget {
   const SearchableDropdown._({
     super.key,
     this.hintText,
+    required this.local,
     this.backgroundDecoration,
     this.searchHintText,
     this.noRecordText,
@@ -185,6 +190,9 @@ class SearchableDropdown<T> extends StatefulWidget {
   /// Dropdown width .
   final double? dialogWidth;
 
+  /// Dropdown width .
+  final String local;
+
   /// Background decoration of dropdown, i.e. with this you can wrap dropdown with Card.
   final Widget Function(Widget child)? backgroundDecoration;
 
@@ -220,6 +228,7 @@ class _SearchableDropdownState<T> extends State<SearchableDropdown<T>> {
       hintText: widget.hintText,
       leadingIcon: widget.leadingIcon,
       margin: widget.margin,
+      local: widget.local,
       dialogWidth: widget.dialogWidth,
       noRecordText: widget.noRecordText,
       onChanged: widget.onChanged,
@@ -253,6 +262,7 @@ class _DropDown<T> extends StatelessWidget {
     this.dropDownMaxHeight,
     this.dialogWidth,
     this.futureRequest,
+    required this.local,
     this.paginatedRequest,
     this.noRecordText,
     this.onChanged,
@@ -263,6 +273,7 @@ class _DropDown<T> extends StatelessWidget {
   final bool isEnabled;
   final bool isDialogExpanded;
   final double? dialogWidth;
+  final String local;
   final double? dropDownMaxHeight;
   final Duration? changeCompletionDelay;
   final EdgeInsetsGeometry? margin;
@@ -293,6 +304,7 @@ class _DropDown<T> extends StatelessWidget {
         }
       },
       child: Padding(
+        /// not this
         padding: margin ?? const EdgeInsets.all(8),
         child: Row(
           children: [
@@ -351,7 +363,7 @@ class _DropDown<T> extends StatelessWidget {
     final deviceHeight = context.deviceHeight;
     final dropdownGlobalPointBounds = controller.key.globalPaintBounds;
     final alertDialogMaxHeight = dropDownMaxHeight ?? deviceHeight * 0.35;
-    const dialogOffset = -50; //Dialog offset from dropdown
+    const dialogOffset = 0; //Dialog offset from dropdown
 
     final dropdownPositionFromBottom = dropdownGlobalPointBounds != null
         ? deviceHeight - dropdownGlobalPointBounds.bottom
@@ -390,8 +402,6 @@ class _DropDown<T> extends StatelessWidget {
         return Padding(
           padding: EdgeInsets.only(
             bottom: reCalculatePosition ?? 0,
-            left: 8,
-            right: 8,
           ),
           child: LayoutBuilder(builder: (context, c) {
             return Column(
@@ -399,9 +409,7 @@ class _DropDown<T> extends StatelessWidget {
               children: [
                 Row(
                   children: [
-                    Directionality.of(context) == TextDirection.rtl
-                        ? Expanded(child: SizedBox())
-                        : SizedBox(),
+                    local == "en" ? Expanded(child: SizedBox()) : SizedBox(),
                     SizedBox(
                       height: alertDialogMaxHeight,
                       width: dialogWidth,
@@ -414,9 +422,7 @@ class _DropDown<T> extends StatelessWidget {
                         changeCompletionDelay: changeCompletionDelay,
                       ),
                     ),
-                    Directionality.of(context) == TextDirection.ltr
-                        ? Expanded(child: SizedBox())
-                        : SizedBox(),
+                    local == "ar" ? Expanded(child: SizedBox()) : SizedBox(),
                   ],
                 ),
               ],

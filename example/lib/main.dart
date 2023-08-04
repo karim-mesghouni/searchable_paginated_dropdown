@@ -57,20 +57,32 @@ class MyApp extends StatelessWidget {
         appBar: AppBar(
           title: const Text('Searchable Dropdown Example'),
         ),
-        body: Card(
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
-          child: SearchableDropdown<int>.paginated(
-            hintText: const Text('Paginated request'),
-            controller: controller,
-            requestItemCount: 25,
-            isEnabled: true,
-            dialogWidth: 200,
-            width: 200,
-            onChanged: (int? value) {
-              debugPrint('$value');
-            },
-          ),
+        body: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Container(
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      border:
+                          Border.all(width: 0.8, color: Colors.grey.shade500)),
+                  child: SearchableDropdown<int>.paginated(
+                    local: "ar",
+                    hintText: const Text('Paginated request'),
+                    controller: controller,
+                    requestItemCount: 25,
+                    isEnabled: true,
+                    dialogWidth: 200,
+                    width: 200,
+                    onChanged: (int? value) {
+                      debugPrint('$value');
+                    },
+                  ),
+                ),
+              ],
+            ),
+          ],
         ),
       ),
     );
