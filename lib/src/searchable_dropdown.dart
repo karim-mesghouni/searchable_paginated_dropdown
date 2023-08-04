@@ -409,7 +409,7 @@ class _DropDown<T> extends StatelessWidget {
               children: [
                 Row(
                   children: [
-                    local == "en" ? Expanded(child: SizedBox()) : SizedBox(),
+                    local == "ar" ? Expanded(child: SizedBox()) : SizedBox(),
                     SizedBox(
                       height: alertDialogMaxHeight,
                       width: dialogWidth,
@@ -422,7 +422,7 @@ class _DropDown<T> extends StatelessWidget {
                         changeCompletionDelay: changeCompletionDelay,
                       ),
                     ),
-                    local == "ar" ? Expanded(child: SizedBox()) : SizedBox(),
+                    local == "en" ? Expanded(child: SizedBox()) : SizedBox(),
                   ],
                 ),
               ],
