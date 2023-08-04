@@ -62,7 +62,6 @@ class MyApp extends StatelessWidget {
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
           child: SearchableDropdown<int>.paginated(
             hintText: const Text('Paginated request'),
-            margin: const EdgeInsets.all(15),
             controller: controller,
             requestItemCount: 25,
             isEnabled: true,

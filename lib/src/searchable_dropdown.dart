@@ -390,8 +390,8 @@ class _DropDown<T> extends StatelessWidget {
         return Padding(
           padding: EdgeInsets.only(
             bottom: reCalculatePosition ?? 0,
-            left: isDialogExpanded ? 16 : dropdownGlobalPointBounds?.left ?? 0,
-            right: isDialogExpanded ? 16 : 0,
+            left: 8,
+            right: 8,
           ),
           child: LayoutBuilder(builder: (context, c) {
             return Column(
