@@ -68,7 +68,7 @@ class MyApp extends StatelessWidget {
                       border:
                           Border.all(width: 0.8, color: Colors.grey.shade500)),
                   child: SearchableDropdown<int>.paginated(
-                    local: "ar",
+                    local: "en",
                     hintText: const Text('Paginated request'),
                     controller: controller,
                     requestItemCount: 25,
