@@ -14,6 +14,7 @@ class SearchableDropdown<T> extends StatefulWidget {
     String? searchHintText,
     Widget? noRecordText,
     double? dropDownMaxHeight,
+    required double? dialogWidth,
     EdgeInsetsGeometry? margin,
     Widget? trailingIcon,
     Widget? trailingClearIcon,
@@ -40,6 +41,7 @@ class SearchableDropdown<T> extends StatefulWidget {
           onChanged: onChanged,
           items: items,
           value: value,
+          dialogWidth: dialogWidth,
           isEnabled: isEnabled,
           controller: controller,
           disabledOnTap: disabledOnTap,
@@ -66,6 +68,7 @@ class SearchableDropdown<T> extends StatefulWidget {
     void Function(T?)? onChanged,
     bool isEnabled = true,
     VoidCallback? disabledOnTap,
+    double? dialogWidth,
     Duration? changeCompletionDelay,
     double? width,
     required SearchableDropdownController<T> controller,
@@ -80,6 +83,7 @@ class SearchableDropdown<T> extends StatefulWidget {
           noRecordText: noRecordText,
           dropDownMaxHeight: dropDownMaxHeight,
           margin: margin,
+          dialogWidth: dialogWidth,
           trailingIcon: trailingIcon,
           trailingClearIcon: trailingClearIcon,
           leadingIcon: leadingIcon,
@@ -103,6 +107,7 @@ class SearchableDropdown<T> extends StatefulWidget {
     this.trailingIcon,
     this.trailingClearIcon,
     this.leadingIcon,
+    required this.dialogWidth,
     this.onChanged,
     this.items,
     this.value,
@@ -177,6 +182,9 @@ class SearchableDropdown<T> extends StatefulWidget {
   /// Dropdown trailing icon.
   final Widget? leadingIcon;
 
+  /// Dropdown width .
+  final double? dialogWidth;
+
   /// Background decoration of dropdown, i.e. with this you can wrap dropdown with Card.
   final Widget Function(Widget child)? backgroundDecoration;
 
@@ -212,6 +220,7 @@ class _SearchableDropdownState<T> extends State<SearchableDropdown<T>> {
       hintText: widget.hintText,
       leadingIcon: widget.leadingIcon,
       margin: widget.margin,
+      dialogWidth: widget.dialogWidth,
       noRecordText: widget.noRecordText,
       onChanged: widget.onChanged,
       searchHintText: widget.searchHintText,
@@ -242,6 +251,7 @@ class _DropDown<T> extends StatelessWidget {
     this.margin,
     this.hintText,
     this.dropDownMaxHeight,
+    this.dialogWidth,
     this.futureRequest,
     this.paginatedRequest,
     this.noRecordText,
@@ -252,6 +262,7 @@ class _DropDown<T> extends StatelessWidget {
 
   final bool isEnabled;
   final bool isDialogExpanded;
+  final double? dialogWidth;
   final double? dropDownMaxHeight;
   final Duration? changeCompletionDelay;
   final EdgeInsetsGeometry? margin;
@@ -384,14 +395,11 @@ class _DropDown<T> extends StatelessWidget {
           ),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.end,
-            crossAxisAlignment: isDialogExpanded
-                ? CrossAxisAlignment.center
-                : CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(
                 height: alertDialogMaxHeight,
-                width:
-                    isDialogExpanded ? null : dropdownGlobalPointBounds?.width,
+                width: dialogWidth,
                 child: _DropDownCard(
                   controller: controller,
                   isReversed: isReversed,

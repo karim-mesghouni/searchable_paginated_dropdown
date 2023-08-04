@@ -9,7 +9,7 @@ void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
   late final dio = Dio();
-  late SearchableDropdownController<int> controller =
+  late final SearchableDropdownController<int> controller =
       SearchableDropdownController(pageListener);
 
   void pageListener(page, searchKey) async {
@@ -28,31 +28,61 @@ class MyApp extends StatelessWidget {
 
     return MaterialApp(
       title: 'Material App',
+      theme: ThemeData(
+        inputDecorationTheme: InputDecorationTheme(
+          labelStyle: TextStyle(fontSize: 16),
+          filled: true,
+          fillColor: Colors.white,
+          contentPadding:
+              const EdgeInsets.symmetric(vertical: 8, horizontal: 10),
+          hintStyle: TextStyle(
+            color: const Color(0xffcecece),
+            fontSize: 14,
+          ),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(8),
+            borderSide: const BorderSide(width: 1, color: Color(0xffcbcbcb)),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(8),
+            borderSide: const BorderSide(width: 1, color: Colors.orange),
+          ),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(8),
+            borderSide: const BorderSide(width: 1, color: Colors.orange),
+          ),
+        ),
+      ),
       home: Scaffold(
         appBar: AppBar(
           title: const Text('Searchable Dropdown Example'),
         ),
-        body: ListView(
-          children: [
-            const SizedBox(height: 20),
-            /////////////
-            Card(
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(15.0)),
-              child: SearchableDropdown<int>.paginated(
-                isDialogExpanded: false,
-                hintText: const Text('Paginated request'),
-                margin: const EdgeInsets.all(15),
-                controller: controller,
-                requestItemCount: 25,
-                onChanged: (int? value) {
-                  debugPrint('$value');
-                },
+        body: SizedBox(
+          width: 220,
+          child: ListView(
+            children: [
+              const SizedBox(height: 20),
+              /////////////
+              Card(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15.0)),
+                child: SearchableDropdown<int>.paginated(
+                  hintText: const Text('Paginated request'),
+                  margin: const EdgeInsets.all(15),
+                  controller: controller,
+                  requestItemCount: 25,
+                  isEnabled: true,
+                  dialogWidth: 200,
+                  width: 200,
+                  onChanged: (int? value) {
+                    debugPrint('$value');
+                  },
+                ),
               ),
-            ),
 
-            ////////////
-          ],
+              ////////////
+            ],
+          ),
         ),
       ),
     );
