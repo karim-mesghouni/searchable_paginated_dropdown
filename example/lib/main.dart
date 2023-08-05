@@ -57,32 +57,35 @@ class MyApp extends StatelessWidget {
         appBar: AppBar(
           title: const Text('Searchable Dropdown Example'),
         ),
-        body: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                Container(
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      border:
-                          Border.all(width: 0.8, color: Colors.grey.shade500)),
-                  child: SearchableDropdown<int>.paginated(
-                    local: "en",
-                    hintText: const Text('Paginated request'),
-                    controller: controller,
-                    requestItemCount: 25,
-                    isEnabled: true,
-                    dialogWidth: 200,
-                    width: 200,
-                    onChanged: (int? value) {
-                      debugPrint('$value');
-                    },
+        body: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  Container(
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        border: Border.all(
+                            width: 0.8, color: Colors.grey.shade500)),
+                    child: SearchableDropdown<int>.paginated(
+                      local: "en",
+                      hintText: const Text('Paginated request'),
+                      controller: controller,
+                      requestItemCount: 25,
+                      isEnabled: true,
+                      dialogWidth: 200,
+                      width: 200,
+                      onChanged: (int? value) {
+                        debugPrint('$value');
+                      },
+                    ),
                   ),
-                ),
-              ],
-            ),
-          ],
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );
