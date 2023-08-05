@@ -22,7 +22,7 @@ class SearchableDropdownController<T> {
 
   late int requestItemCount;
 
-  late List<SearchableDropdownMenuItem<T>>? items;
+  List<SearchableDropdownMenuItem<T>>? items;
 
   String searchText = '';
   ValueNotifier<List<SearchableDropdownMenuItem<T>>?> searchedItems =
