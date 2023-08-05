@@ -58,7 +58,7 @@ class SearchableDropdownController<T> {
       _page = _page + 1;
     }
     status.value = SearchableDropdownStatus.loaded;
-    debugPrint('searchable dropdown has more data: $_hasMoreData');
+    debugPrint('searchable dropdown has more data : $_hasMoreData');
   }
 
   void addListener(Function(int, String?) listenr) {
