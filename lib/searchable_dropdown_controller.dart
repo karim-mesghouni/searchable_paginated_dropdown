@@ -30,9 +30,9 @@ class SearchableDropdownController<T> {
 
   bool _hasMoreData = true;
   int _page = 1;
-  final Function(int, String) newPageRequested;
+  Function(int, String)? newPageRequested;
 
-  SearchableDropdownController(this.newPageRequested);
+  //SearchableDropdownController(this.newPageRequested);
 
   Future<void> getItemsWithPaginatedRequest({
     required int page,
@@ -46,7 +46,7 @@ class SearchableDropdownController<T> {
     }
     if (!_hasMoreData) return;
     //  status.value = SearchableDropdownStatus.busy;
-    newPageRequested(page, key ?? "");
+    newPageRequested?.call(page, key ?? "");
   }
 
   appendNewPage(List<SearchableDropdownMenuItem<T>> data) {
@@ -59,6 +59,10 @@ class SearchableDropdownController<T> {
     }
     status.value = SearchableDropdownStatus.loaded;
     debugPrint('searchable dropdown has more data: $_hasMoreData');
+  }
+
+  void addListener(Function(int, String?) listenr) {
+    newPageRequested = listenr;
   }
 
   void fillSearchedList(String? value) {

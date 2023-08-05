@@ -10,7 +10,7 @@ void main() => runApp(MyApp());
 class MyApp extends StatelessWidget {
   late final dio = Dio();
   late final SearchableDropdownController<int> controller =
-      SearchableDropdownController(pageListener);
+      SearchableDropdownController();
 
   void pageListener(page, searchKey) async {
     print("object");
@@ -25,7 +25,15 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final formKey = GlobalKey<FormState>();
-
+    controller.addListener((page, searchKey) async {
+      print("object");
+      final paginatedList = await getAnimeList(page: page, key: searchKey);
+      final data = paginatedList?.animeList
+          ?.map((e) => SearchableDropdownMenuItem(
+              value: e.malId, label: e.title ?? '', child: Text(e.title ?? '')))
+          .toList();
+      controller.appendNewPage(data!);
+    });
     return MaterialApp(
       title: 'Material App',
       theme: ThemeData(
