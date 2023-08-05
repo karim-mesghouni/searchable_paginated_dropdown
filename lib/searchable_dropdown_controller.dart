@@ -20,7 +20,7 @@ class SearchableDropdownController<T> {
 
   late Future<List<SearchableDropdownMenuItem<T>>?> Function()? futureRequest;
 
-  int? requestItemCount;
+  int requestItemCount = 16;
 
   List<SearchableDropdownMenuItem<T>>? items;
 
