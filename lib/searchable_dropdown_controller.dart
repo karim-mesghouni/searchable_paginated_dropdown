@@ -20,7 +20,7 @@ class SearchableDropdownController<T> {
 
   late Future<List<SearchableDropdownMenuItem<T>>?> Function()? futureRequest;
 
-  late int requestItemCount;
+  int? requestItemCount;
 
   List<SearchableDropdownMenuItem<T>>? items;
 
@@ -52,7 +52,7 @@ class SearchableDropdownController<T> {
   appendNewPage(List<SearchableDropdownMenuItem<T>> data) {
     paginatedItemList.value ??= [];
     paginatedItemList.value = paginatedItemList.value! + data;
-    if (data.length < requestItemCount) {
+    if (data.length < requestItemCount!) {
       _hasMoreData = false;
     } else {
       _page = _page + 1;
