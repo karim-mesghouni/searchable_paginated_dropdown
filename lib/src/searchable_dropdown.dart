@@ -408,32 +408,19 @@ class _DropDown<T> extends StatelessWidget {
           child: LayoutBuilder(builder: (context, c) {
             return Column(
               mainAxisAlignment: MainAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Row(
-                  children: [
-                    // Directionality.of(context) == TextDirection.ltr
-                    //     ? Expanded(child: SizedBox())
-                    //     : SizedBox(),
-                    // Directionality.of(context) == TextDirection.rtl
-                    //     ? Expanded(child: SizedBox())
-                    //     : SizedBox(),
-
-                    // local == "ar" ? Expanded(child: SizedBox()) : SizedBox(),
-                    SizedBox(
-                      height: alertDialogMaxHeight,
-                      width: dialogWidth,
-                      child: _DropDownCard(
-                        controller: controller,
-                        isReversed: isReversed,
-                        noRecordText: noRecordText,
-                        onChanged: onChanged,
-                        searchHintText: searchHintText,
-                        changeCompletionDelay: changeCompletionDelay,
-                      ),
-                    ),
-
-                    //local == "en" ? Expanded(child: SizedBox()) : SizedBox(),
-                  ],
+                SizedBox(
+                  height: alertDialogMaxHeight,
+                  width: dialogWidth,
+                  child: _DropDownCard(
+                    controller: controller,
+                    isReversed: isReversed,
+                    noRecordText: noRecordText,
+                    onChanged: onChanged,
+                    searchHintText: searchHintText,
+                    changeCompletionDelay: changeCompletionDelay,
+                  ),
                 ),
               ],
             );
