@@ -411,7 +411,14 @@ class _DropDown<T> extends StatelessWidget {
               children: [
                 Row(
                   children: [
-                    local == "ar" ? Expanded(child: SizedBox()) : SizedBox(),
+                    // Directionality.of(context) == TextDirection.ltr
+                    //     ? Expanded(child: SizedBox())
+                    //     : SizedBox(),
+                    // Directionality.of(context) == TextDirection.rtl
+                    //     ? Expanded(child: SizedBox())
+                    //     : SizedBox(),
+
+                    // local == "ar" ? Expanded(child: SizedBox()) : SizedBox(),
                     SizedBox(
                       height: alertDialogMaxHeight,
                       width: dialogWidth,
@@ -424,7 +431,8 @@ class _DropDown<T> extends StatelessWidget {
                         changeCompletionDelay: changeCompletionDelay,
                       ),
                     ),
-                    local == "en" ? Expanded(child: SizedBox()) : SizedBox(),
+
+                    //local == "en" ? Expanded(child: SizedBox()) : SizedBox(),
                   ],
                 ),
               ],
