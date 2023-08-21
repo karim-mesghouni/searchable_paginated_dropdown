@@ -408,7 +408,7 @@ class _DropDown<T> extends StatelessWidget {
           child: LayoutBuilder(builder: (context, c) {
             return Column(
               mainAxisAlignment: MainAxisAlignment.end,
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 SizedBox(
                   height: alertDialogMaxHeight,
